@@ -18,7 +18,112 @@ function vote(node) {
   ping.src = node.href;
 
   return false; // cancel browser nav
-} </script><title>Hacker News | You can increase your intelligence</title></head><body><center><table border=0 cellpadding=0 cellspacing=0 width="85%" bgcolor=#f6f6ef><tr><td bgcolor=#d7f5f9><table border=0 cellpadding=0 cellspacing=0 width="100%" style="padding:2px"><tr><td style="width:18px;padding-right:4px"><a href="http://ycombinator.com"><img src="http://ycombinator.com/images/y18.gif" width=18 height=18 style="border:1px #ffffff solid;"></img></a></td><td style="line-height:12pt; height:10px;"><span class="pagetop"><b><a href="news">Hacker News</a></b><img src="http://ycombinator.com/images/s.gif" height=1 width=10><a href="newest">new</a> | <a href="threads?id=giu">threads</a> | <a href="newcomments">comments</a> | <a href="ask">ask</a> | <a href="jobs">jobs</a> | <a href="submit">submit</a></span></td><td style="text-align:right;padding-right:4px;"><span class="pagetop"><a href="user?id=giu">giu</a>&nbsp;(1869)&nbsp;|&nbsp;<a href="/r?fnid=xJ410YRsqQ">logout</a></span></td></tr></table></td></tr><tr style="height:10px"></tr><tr><td><table border=0><tr><td><center><img src="http://ycombinator.com/images/s.gif" height=1 width=14></center></td><td class="title"><a href="http://www.scientificamerican.com/blog/post.cfm?id=you-can-increase-your-intelligence-2011-03-07">You can increase your intelligence</a><span class="comhead"> (scientificamerican.com) </span></td></tr><tr><td colspan=1></td><td class="subtext"><span id=score_2562632>260 points</span> by <a href="user?id=bootload">bootload</a> 11 hours ago  | <a href="/r?fnid=LC1mkDVTSb">flag</a> | <a href="item?id=2562632">76 comments</a></td></tr><tr style="height:10px"></tr><tr><td></td><td><form method=post action="/r"><input type=hidden name="fnid" value="sOifeQp8Jk"><textarea name="text" rows=6 cols=60></textarea><br><br>
+}
+
+(function() {
+  var s=document.createElement('script');
+  s.setAttribute('src','http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js');
+
+  if(typeof jQuery=='undefined') {
+    document.getElementsByTagName('head')[0].appendChild(s);
+  }
+
+  window.setTimeout(function(){
+    var $$ = jQuery;
+
+    if($$("#hnthreadified").length===0){
+      $$("body").prepend("<input type='hidden' id='hnthreadified' />");
+    }
+    else{
+      alert("This page has already been threadified!");
+      return;
+    }
+
+    var expand = "[+]";
+    var reduce = "[-]";
+
+    $$(".default").each(function(i,e){
+      var $comhead = $$(".comhead", $$(this));
+      var $links = $$("a", $comhead);
+      var delCount = 0;
+
+      if($links.length > 0 && $links[0].innerHTML[0]===expand[0]){
+        return;
+      }
+
+      if($links.length > 1){
+        var id = $links[$links.length-1].href.split(/=/)[1];
+        $comhead.prepend("<a class='collapselink' id='c_"+id+"' href='javascript:void(0)'>"+reduce+"</a> ");
+      }
+      else{ //comment has been deleted
+        $$("div", $$(this)).hide();
+        $$(this).prepend("<a class='collapselink' style='color:#828282' id='c_"+(++delCount)+"' href='javascript:void(0)'>"+reduce+"</a> ")
+      }
+      
+    });
+
+  $$(".collapselink").live("click", function(){
+    var $t = $$(this);
+    var id = $t.attr("id").split(/_/)[1];
+    var $comment = $$(".comment", $t.closest("td"));
+    var curIndentLevel = parseInt($$("td img", $t.closest("tr")).attr("width"));
+    var $com = $t.closest("table");
+    var $nextCom = $com.closest("tr").next(); //Following comment
+    var changeToggleSign = true;
+    var isExpand = $t.html() === expand;
+    var toggleSingle = function(){
+      if(isExpand){
+        $comment.show().next().show();
+        $t.html(reduce);
+      }
+      else{
+        $comment.hide().next().hide();
+        $t.html(expand);
+      }
+    };
+
+    if($nextCom.length===0){
+      toggleSingle();
+    }
+
+    else
+    {
+      while($nextCom && ($nextCom.length!==0)){
+        if(parseInt($$("td img", $nextCom).attr("width")) <= curIndentLevel){
+          toggleSingle();
+          $nextCom = null;
+        }
+        else{
+          if(isExpand){
+            if(changeToggleSign){
+              $t.html(reduce);
+              changeToggleSign=false;
+              $comment.show().next().show();
+            }
+            $$(".collapselink", $nextCom).html(reduce);
+            $$(".comment", $nextCom).show();
+            $nextCom.show();
+          }
+          else{
+            if(changeToggleSign){
+              $t.html(reduce);
+              changeToggleSign=false;
+              $comment.hide().next().hide();
+            }
+            $nextCom.hide();
+          }
+
+            $nextCom = $nextCom.next();
+        }
+      }
+    }
+  });
+  }, 1000);
+})();
+
+
+
+</script><title>Hacker News | You can increase your intelligence</title></head><body><center><table border=0 cellpadding=0 cellspacing=0 width="85%" bgcolor=#f6f6ef><tr><td bgcolor=#d7f5f9><table border=0 cellpadding=0 cellspacing=0 width="100%" style="padding:2px"><tr><td style="width:18px;padding-right:4px"><a href="http://ycombinator.com"><img src="http://ycombinator.com/images/y18.gif" width=18 height=18 style="border:1px #ffffff solid;"></img></a></td><td style="line-height:12pt; height:10px;"><span class="pagetop"><b><a href="news">Hacker News</a></b><img src="http://ycombinator.com/images/s.gif" height=1 width=10><a href="newest">new</a> | <a href="threads?id=giu">threads</a> | <a href="newcomments">comments</a> | <a href="ask">ask</a> | <a href="jobs">jobs</a> | <a href="submit">submit</a></span></td><td style="text-align:right;padding-right:4px;"><span class="pagetop"><a href="user?id=giu">giu</a>&nbsp;(1869)&nbsp;|&nbsp;<a href="/r?fnid=xJ410YRsqQ">logout</a></span></td></tr></table></td></tr><tr style="height:10px"></tr><tr><td><table border=0><tr><td><center><img src="http://ycombinator.com/images/s.gif" height=1 width=14></center></td><td class="title"><a href="http://www.scientificamerican.com/blog/post.cfm?id=you-can-increase-your-intelligence-2011-03-07">You can increase your intelligence</a><span class="comhead"> (scientificamerican.com) </span></td></tr><tr><td colspan=1></td><td class="subtext"><span id=score_2562632>260 points</span> by <a href="user?id=bootload">bootload</a> 11 hours ago  | <a href="/r?fnid=LC1mkDVTSb">flag</a> | <a href="item?id=2562632">76 comments</a></td></tr><tr style="height:10px"></tr><tr><td></td><td><form method=post action="/r"><input type=hidden name="fnid" value="sOifeQp8Jk"><textarea name="text" rows=6 cols=60></textarea><br><br>
 <input type=submit value="add comment"></form></td></tr></table><br><br>
 <table border=0><tr><td><table border=0><tr><td><img src="http://ycombinator.com/images/s.gif" height=1 width=0></td><td valign=top><center><img src="http://ycombinator.com/images/s.gif" height=1 width=14></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px; "><span class="comhead"><a href="user?id=tokenadult">tokenadult</a> 10 hours ago  | <a href="item?id=2562743">link</a></span></div><br>
 <span class="comment"><font color=#000000>The author raises a number of interesting questions after citing several path-breaking research studies. Why, indeed, aren't school systems adopting some of these techniques known to improve children's learning and problem-solving ability? Quite a few mathematicians have written critiques of United States practice in teaching primary and secondary school mathematics, informed by practice in other countries, for example Hung-hsi Wu,<p><a href="http://math.berkeley.edu/~wu/Lisbon2010_2.pdf" rel="nofollow">http://math.berkeley.edu/~wu/Lisbon2010_2.pdf</a><p><a href="http://math.berkeley.edu/~wu/Lisbon2010_3.pdf" rel="nofollow">http://math.berkeley.edu/~wu/Lisbon2010_3.pdf</a><p><a href="http://math.berkeley.edu/~wu/Lisbon2010_4.pdf" rel="nofollow">http://math.berkeley.edu/~wu/Lisbon2010_4.pdf</a><p><a href="http://math.berkeley.edu/~wu/NoticesAMS2011.pdf" rel="nofollow">http://math.berkeley.edu/~wu/NoticesAMS2011.pdf</a><p>Richard Askey,<p><a href="http://www.aft.org/pdfs/americaneducator/fall1999/amed1.pdf" rel="nofollow">http://www.aft.org/pdfs/americaneducator/fall1999/amed1.pdf</a><p><a href="http://www.math.wisc.edu/~askey/ask-gian.pdf" rel="nofollow">http://www.math.wisc.edu/~askey/ask-gian.pdf</a><p>Roger E. Howe,<p><a href="http://www.ams.org/notices/199908/rev-howe.pdf" rel="nofollow">http://www.ams.org/notices/199908/rev-howe.pdf</a><p>Patricia Kenschaft,<p><a href="http://www.ams.org/notices/200502/fea-kenschaft.pdf" rel="nofollow">http://www.ams.org/notices/200502/fea-kenschaft.pdf</a><p>and<p>James Milgram.<p>ftp://math.stanford.edu/pub/papers/milgram/milgram-msri.pdf<p>ftp://math.stanford.edu/pub/papers/milgram/report-on-cmp.html<p>All those mathematicians think that the United States could do much better than it does in teaching elementary mathematics in the public school system. I think so too after living in Taiwan twice in my adult life (January 1982 through February 1985, and December 1998 through July 2001). Taiwan is not the only place where elementary mathematics instruction is better than it is in the United States. Chapter 1: "International Student Achievement in Mathematics" from the TIMSS 2007 study of mathematics achievement in many different countries includes, in Exhibit 1.1 (pages 34 and 35)<p><a href="http://pirls.bc.edu/timss2007/PDF/T07_M_IR_Chapter1.pdf" rel="nofollow">http://pirls.bc.edu/timss2007/PDF/T07_M_IR_Chapter1.pdf</a><p>a chart of mathematics achievement levels in various countries. Although the United States is above the international average score among the countries surveyed, as we would expect from the level of economic development in the United States, the United States is well below the top country listed, which is Singapore. An average United States student is at the bottom quartile level for Singapore, or from another point of view, a top quartile student in the United States is only at the level of an average student in Singapore. I've been curious about mathematics education in Singapore ever since I heard of these results from an earlier TIMSS sample in the 1990s.<p>The article "The Singaporean Mathematics Curriculum: Connections to TIMSS"<p><a href="http://www.merga.net.au/documents/RP182006.pdf" rel="nofollow">http://www.merga.net.au/documents/RP182006.pdf</a><p>by a Singaporean author explains some of the background to the Singapore math materials and how they approach topics that are foundational for later mathematics study. I am amazed that persons from Singapore in my generation (born in the late 1950s) grew up in a country that was extremely poor (it's hard to remember that about Singapore, but until the 1970s Singapore was definitely part of the Third World) and were educated in a foreign language (the language of schooling in Singapore has long been English, but the home languages of most Singaporeans are south Chinese languages like my wife's native Hokkien or Malay or Indian languages like Tamil) and yet received very thorough instruction in mathematics. I hope that all of us here in the United States can do at least that well in the current generation.<p>P.S. Another reply mentions the Flynn effect (secular increase in raw scores on IQ tests from generation to generation in most countries worldwide), and links to the Wikipedia article. Thanks for bringing that up. Being aware that the Wikipedia article on that subject has been subject to edit wars that have gone to the Wikipedia Arbitration Committee,<p><a href="http://en.wikipedia.org/wiki/Wikipedia:Arbitration/Requests/Case/Race_and_intelligence" rel="nofollow">http://en.wikipedia.org/wiki/Wikipedia:Arbitration/Requests/...</a><p>I think it may be helpful to link to another source about the Flynn effect<p><a href="http://cscs.umich.edu/~crshalizi/reviews/flynn-beyond/" rel="nofollow">http://cscs.umich.edu/~crshalizi/reviews/flynn-beyond/</a><p>that has had the influence of better informed and more impartial editors. There are several good discussions of the Flynn effect in recent books on IQ testing, and citations to those can be found in Wikipedia user space.<p><a href="http://en.wikipedia.org/wiki/User:WeijiBaikeBianji/IntelligenceCitations" rel="nofollow">http://en.wikipedia.org/wiki/User:WeijiBaikeBianji/Intellige...</a></font></span><p><font size=1><u><a href="reply?id=2562743&whence=%69%74%65%6d%3f%69%64%3d%32%35%36%32%36%33%32">reply</a></u></font></td></tr></table></td></tr><tr><td><table border=0><tr><td><img src="http://ycombinator.com/images/s.gif" height=1 width=40></td><td valign=top><center><a id=up_2562907 onclick="return vote(this)" href="vote?for=2562907&dir=up&by=giu&auth=aade366e0e02939503d7f8adc77786b38275584c&whence=%69%74%65%6d%3f%69%64%3d%32%35%36%32%36%33%32"><img src="http://ycombinator.com/images/grayarrow.gif" border=0 vspace=3 hspace=2></a><br>
