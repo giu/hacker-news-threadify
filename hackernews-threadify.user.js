@@ -5,7 +5,6 @@
 // @include			http://news.ycombinator.com/item*
 // @include			http://news.ycombinator.com/threads*
 // @include			http://news.ycombinator.com/newcomments
-// @include			*
 // @require			http://code.jquery.com/jquery.min.js
 // ==/UserScript==
 if($("#hnthreadified").length===0){
