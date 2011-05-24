@@ -32,7 +32,7 @@ $(".default").each(function(i,e){
     var id = $links[$links.length-1].href.split(/=/)[1];
     $comhead.prepend("<a class='collapselink' id='c_"+id+"' href='javascript:void(0)'>"+reduce+"</a> ");
   }
-  else{ //comment has been deleted
+  else{ //Comment has been deleted
     $("div", $(this)).hide();
     $(this).prepend("<a class='collapselink' style='color:#828282' id='c_"+(++delCount)+"' href='javascript:void(0)'>"+reduce+"</a> ")
   }
@@ -48,50 +48,40 @@ $(".collapselink").live("click", function(){
   var $nextCom = $com.closest("tr").next(); //Following comment
   var changeToggleSign = true;
   var isExpand = $t.html() === expand;
-  var toggleSingle = function(){
-    if(isExpand){
-      $comment.show().next().show();
-      $t.html(reduce);
-    }
-    else{
-      $comment.hide().next().hide();
-      $t.html(expand);
-    }
-  };
 
-  if($nextCom.length===0){
-    toggleSingle();
-  }
-
-  else
-  {
-    while($nextCom){
-      if((parseInt($("td img", $nextCom).attr("width")) <= curIndentLevel) || ($nextCom.next().length===0)){
-        toggleSingle();
-        $nextCom = null;
+  while($nextCom){
+    if($nextCom.length===0 || (parseInt($("td img", $nextCom).attr("width")) <= curIndentLevel)){
+      if(isExpand){
+        $comment.show().next().show();
+        $t.html(reduce);
       }
       else{
-        if(isExpand){
-          if(changeToggleSign){
-            $t.html(reduce);
-            changeToggleSign=false;
-            $comment.show().next().show();
-          }
-          $(".collapselink", $nextCom).html(reduce);
-          $(".comment", $nextCom).show();
-          $nextCom.show();
-        }
-        else{
-          if(changeToggleSign){
-            $t.html(reduce);
-            changeToggleSign=false;
-            $comment.hide().next().hide();
-          }
-          $nextCom.hide();
-        }
-
-        $nextCom = $nextCom.next();
+        $comment.hide().next().hide();
+        $t.html(expand);
       }
+      $nextCom = null;
+    }
+    else{
+      if(isExpand){
+        if(changeToggleSign){
+          $t.html(reduce);
+          changeToggleSign=false;
+          $comment.show().next().show();
+        }
+        $(".collapselink", $nextCom).html(reduce);
+        $(".comment", $nextCom).show();
+        $nextCom.show();
+      }
+      else{
+        if(changeToggleSign){
+          $t.html(reduce);
+          changeToggleSign=false;
+          $comment.hide().next().hide();
+        }
+        $nextCom.hide();
+      }
+
+      $nextCom = $nextCom.next();
     }
   }
 });

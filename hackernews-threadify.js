@@ -43,14 +43,15 @@
     $$(".collapselink").live("click", function(){
       var $t = $$(this);
       var id = $t.attr("id").split(/_/)[1];
-      var $comment = $$(".comment", $t.closest("td"));
-      var curIndentLevel = parseInt($$("td img", $t.closest("tr")).attr("width"));
+      var $comment = $$(".comment", $t.closest("td"));//Get comment to which the collapse link is appended
+      var curIndentLevel = parseInt($$("td img", $t.closest("tr")).attr("width"));//Get the current comment's indentation level
       var $com = $t.closest("table");
-      var $nextCom = $com.closest("tr").next(); //Following comment
+      var $nextCom = $com.closest("tr").next();//Comment following to the currently selected comment
       var changeToggleSign = true;
       var isExpand = $t.html() === expand;
-      var toggleSingle = function(){
 
+      while($nextCom){
+        if($nextCom.length===0 || (parseInt($$("td img", $nextCom).attr("width")) <= curIndentLevel)){
           if(isExpand){
             $comment.show().next().show();
             $t.html(reduce);
@@ -59,44 +60,32 @@
             $comment.hide().next().hide();
             $t.html(expand);
           }
-
-      };
-
-      if($nextCom.length===0){
-        toggleSingle();
-      }
-
-      else
-      {
-        while($nextCom && ($nextCom.length!==0)){
-          if((parseInt($("td img", $nextCom).attr("width")) <= curIndentLevel)){
-            toggleSingle();
-            $nextCom = null;
+          $nextCom = null;
+        }
+        else{
+          if(isExpand){
+            if(changeToggleSign){
+              $t.html(reduce);
+              changeToggleSign=false;
+              $comment.show().next().show();
+            }
+            $$(".collapselink", $nextCom).html(reduce);
+            $$(".comment", $nextCom).show();
+            $nextCom.show();
           }
           else{
-            if(isExpand){
-              if(changeToggleSign){
-                $t.html(reduce);
-                changeToggleSign=false;
-                $comment.show().next().show();
-              }
-              $$(".collapselink", $nextCom).html(reduce);
-              $$(".comment", $nextCom).show();
-              $nextCom.show();
+            if(changeToggleSign){
+              $t.html(reduce);
+              changeToggleSign=false;
+              $comment.hide().next().hide();
             }
-            else{
-              if(changeToggleSign){
-                $t.html(reduce);
-                changeToggleSign=false;
-                $comment.hide().next().hide();
-              }
-              $nextCom.hide();
-            }
-
-            $nextCom = $nextCom.next();
+            $nextCom.hide();
           }
+
+          $nextCom = $nextCom.next();
         }
       }
+      
     });
   }, 1000);
 })();
