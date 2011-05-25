@@ -13,7 +13,6 @@ var reduce = "[-]";
 $(".default").each(function(i,e){
   var $comhead = $(".comhead", $(this));
   var $links = $("a", $comhead);
-  var delCount = 0;
 
   if($links.length > 0 && $links[0].innerHTML[0]===expand[0]){
     return;
@@ -23,9 +22,9 @@ $(".default").each(function(i,e){
     var id = $links[$links.length-1].href.split(/=/)[1];
     $comhead.prepend("<a class='collapselink' id='c_"+id+"' href='javascript:void(0)'>"+reduce+"</a> ");
   }
-  else{ //Comment has been deleted
+  else{//Comment has been deleted
     $("div", $(this)).hide();
-    $(this).prepend("<a class='collapselink' style='color:#828282' id='c_"+(++delCount)+"' href='javascript:void(0)'>"+reduce+"</a> ")
+    $(this).prepend("<a class='collapselink' style='color:#828282' id='c_"+i+"' href='javascript:void(0)'>"+reduce+"</a> ")
   }
   
 });
