@@ -4,7 +4,7 @@ Hacker News Threadify (HNT) is a little piece of JavaScript that once executed o
 
 You can use HNT by creating a bookmark and include the [bookmarklet code](hacker-news-threadify/raw/master/hacker-news-threadify.bookmarklet.js) or by installing the [GreaseMonkey script](https://www.userscripts.org/scripts/show/110317). 
 
-You can find the [HNT Greasemonkey script on userscripts.org](https://www.userscripts.org/scripts/show/110317), too.
+You can find the [HNT Greasemonkey script on userscripts.org](http://www.userscripts.org/scripts/show/110317), too.
 
 ## Screenshot
 
