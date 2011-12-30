@@ -8,4 +8,4 @@ You can find the [HNT Greasemonkey script on userscripts.org](http://www.userscr
 
 ## Screenshot
 
-<img src="http://i.imgur.com/yyhHQ.png" alt="Hacker News Threadify - Allows you to collapse and expand comments in a Hacker News thread" title="Hacker News Threadify - Allows you to collapse and expand comments in a Hacker News thread" />
+<img src="hacker-news-threadify/raw/master/hacker-news-threadify.png" alt="Hacker News Threadify - Allows you to collapse and expand comments in a Hacker News thread" title="Hacker News Threadify - Allows you to collapse and expand comments in a Hacker News thread" />
