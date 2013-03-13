@@ -1,6 +1,6 @@
 (function() {
   var s=document.createElement('script');
-  s.setAttribute('src','http://code.jquery.com/jquery.min.js');
+  s.setAttribute('src','//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js');
 
   if(typeof jQuery=='undefined') {
     document.getElementsByTagName('head')[0].appendChild(s);
@@ -37,7 +37,7 @@
       
     });
 
-    $(".collapselink").live("click", function(){
+    $(".collapselink").on("click", function(){
       var $t = $(this);
       var id = $t.attr("id").split(/_/)[1];
       var $comment = $(".comment", $t.closest("td"));
