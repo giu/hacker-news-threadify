@@ -5,14 +5,17 @@
 // @include			http://news.ycombinator.com/item*
 // @include			http://news.ycombinator.com/threads*
 // @include			http://news.ycombinator.com/newcomments
-// @version			1.1
+// @include			https://news.ycombinator.com/item*
+// @include			https://news.ycombinator.com/threads*
+// @include			https://news.ycombinator.com/newcomments
+// @version			1.2
 // ==/UserScript==
 
 //A thanks for this snippet goes to tghw:
 //http://stackoverflow.com/questions/2246901/how-can-i-use-jquery-in-greasemonkey-scripts-in-google-chrome
 function addJQuery(callback) {
 	var script = document.createElement("script");
-	script.setAttribute("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js");
+	script.setAttribute("src", "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js");
 	script.addEventListener('load', function() {
 	var script = document.createElement("script");
 		script.textContent = "(" + callback.toString() + ")();";
@@ -45,7 +48,7 @@ function threadify(){
 		
 	});
 
-	$(".collapselink").live("click", function(){
+	$(".collapselink").on("click", function(){
 		var $t = $(this);
 		var id = $t.attr("id").split(/_/)[1];
 		var $comment = $(".comment", $t.closest("td"));
